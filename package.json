@@ -1,10 +1,13 @@
 {
   "devDependencies": {
     "tsx": "^4.23.12",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vitest": "^3.2.7"
   },
   "type": "module",
   "scripts": {
-      "test:tree": "tsx src/treeStore/index.js"
+    "test:tree": "tsx src/treeStore/index.js",
+    "test": "vitest",
+    "test:run": "vitest run"
   }
 }
