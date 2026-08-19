@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  },
+  "type": "module",
+  "scripts": {
+      "test:tree": "tsx src/treeStore/index.js"
+  }
+}
