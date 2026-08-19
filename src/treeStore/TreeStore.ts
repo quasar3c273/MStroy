@@ -2,6 +2,10 @@ import TTreeItemsData from "../tree/types/types"
 
 export default class TreeStore {
     private readonly items = new Map<number | string, TTreeItemsData>()
+    private readonly children = new Map<
+        number | string,
+        Set<number | string>
+    >()
 
     constructor(items: TTreeItemsData[]) {
         for (const item of items) {
@@ -35,5 +39,62 @@ export default class TreeStore {
         }
 
         this.items.set(item.id, item)
+    }
+
+    getChildren(id: number | string): TTreeItemsData[] {
+        const childIds = this.children.get(id)
+
+        if (!childIds) {
+            return []
+        }
+
+        return Array.from(childIds)
+            .map(childId => this.items.get(childId))
+            .filter((item): item is TTreeItemsData => item !== undefined)
+    }
+
+    getAllChildren(id: number | string): TTreeItemsData[] {
+        const result: TTreeItemsData[] = []
+
+        const traverse = (parentId: number | string): void => {
+            const childIds = this.children.get(parentId)
+
+            if (!childIds) {
+                return
+            }
+
+            for (const childId of childIds) {
+                const child = this.items.get(childId)
+
+                if (!child) {
+                    continue
+                }
+
+                result.push(child)
+                traverse(childId)
+            }
+        }
+
+        traverse(id)
+
+        return result
+    }
+
+    getAllParents(id: number | string): TTreeItemsData[] {
+        const result: TTreeItemsData[] = []
+
+        let current = this.items.get(id)
+
+        while (current) {
+            result.push(current)
+
+            if (current.parent === null) {
+                break
+            }
+
+            current = this.items.get(current.parent)
+        }
+
+        return result
     }
 }
