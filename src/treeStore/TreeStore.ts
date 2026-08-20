@@ -9,7 +9,25 @@ export default class TreeStore {
 
     constructor(items: TTreeItemsData[]) {
         for (const item of items) {
-            this.addItem(item)
+            if (this.items.has(item.id)) {
+                throw new Error(
+                    `Элемент с ID "${item.id}" уже существует`
+                )
+            }
+
+            this.items.set(item.id, item)
+        }
+
+        for (const item of items) {
+            if (item.parent !== null) {
+                if (!this.items.has(item.parent)) {
+                    throw new Error(
+                        `Родителя с ID "${item.parent}" не существует`
+                    )
+                }
+
+                this.addChildReference(item.parent, item.id)
+            }
         }
     }
 
@@ -20,7 +38,7 @@ export default class TreeStore {
     getItem(id: number | string): TTreeItemsData | undefined {
         return this.items.get(id)
     }
-
+    
     addItem(item: TTreeItemsData): void {
         if (this.items.has(item.id)) {
             throw new Error(
@@ -28,14 +46,47 @@ export default class TreeStore {
             )
         }
 
+        if (
+            item.parent !== null &&
+            !this.items.has(item.parent)
+        ) {
+            throw new Error(
+                `Родителя с ID "${item.parent}" не существует`
+            )
+        }
+
         this.items.set(item.id, item)
+
+        if (item.parent !== null) {
+            this.addChildReference(item.parent, item.id)
+        }
     }
 
+    
     updateItem(item: TTreeItemsData): void {
-        if (!this.items.has(item.id)) {
+        const oldItem = this.items.get(item.id)
+
+        if (!oldItem) {
             throw new Error(
                 `Элемента с ID "${item.id}" не существует`
             )
+        }
+
+        if (
+            item.parent !== null &&
+            !this.items.has(item.parent)
+        ) {
+            throw new Error(
+                `Родителя с ID "${item.parent}" не существует`
+            )
+        }
+
+        if (oldItem.parent !== item.parent) {
+            this.removeFromParentIndex(oldItem)
+
+            if (item.parent !== null) {
+                this.addChildReference(item.parent, item.id)
+            }
         }
 
         this.items.set(item.id, item)
