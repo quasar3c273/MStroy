@@ -97,4 +97,60 @@ export default class TreeStore {
 
         return result
     }
+
+    removeItem(id: number | string): void {
+        const item = this.items.get(id)
+
+        if (!item) {
+            return
+        }
+
+        const descendants = this.getAllChildren(id)
+
+        for (const descendant of descendants) {
+            this.removeFromParentIndex(descendant)
+
+            this.items.delete(descendant.id)
+            this.children.delete(descendant.id)
+        }
+
+        this.removeFromParentIndex(item)
+
+        this.items.delete(id)
+        this.children.delete(id)
+    }
+
+    private addChildReference(
+        parentId: number | string,
+        childId: number | string,
+    ): void {
+        let childIds = this.children.get(parentId)
+
+        if (!childIds) {
+            childIds = new Set<number | string>()
+            this.children.set(parentId, childIds)
+        }
+
+        childIds.add(childId)
+    }
+
+    private removeFromParentIndex(
+        item: TTreeItemsData,
+    ): void {
+        if (item.parent === null) {
+            return
+        }
+
+        const childIds = this.children.get(item.parent)
+
+        if (!childIds) {
+            return
+        }
+
+        childIds.delete(item.id)
+
+        if (childIds.size === 0) {
+            this.children.delete(item.parent)
+        }
+    }
 }
