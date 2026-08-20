@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import TreeStore from "../treeStore/TreeStore"
-import { TTreeItemsData } from "../types/types"
+import type { TTreeItemsData } from "../types/types"
 
 const createItems = (count: number): TTreeItemsData[] => {
     const items: TTreeItemsData[] = [

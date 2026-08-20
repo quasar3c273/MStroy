@@ -1,4 +1,4 @@
-import { TTreeItemsData } from "../types/types";
+import type { TTreeItemsData } from "../types/types";
 
 export const items: TTreeItemsData[] = [
     { id: 1, parent: null, label: 'Айтем 1' },
