@@ -11,7 +11,7 @@ export default class TreeStore {
         for (const item of items) {
             if (this.items.has(item.id)) {
                 throw new Error(
-                    `Элемент с ID "${item.id}" уже существует`
+                    `Элемент с ID "${item.id}" существует`
                 )
             }
 
@@ -68,7 +68,7 @@ export default class TreeStore {
 
         if (!oldItem) {
             throw new Error(
-                `Элемента с ID "${item.id}" не существует`
+                `Элемент с ID "${item.id}" не существует`
             )
         }
 

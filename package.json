@@ -6,8 +6,9 @@
   },
   "type": "module",
   "scripts": {
-    "test:tree": "tsx src/treeStore/index.js",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "test:unit": "vitest run tests/TreeStore.test.ts",
+    "test:performance": "vitest run tests/TreeStore.performance.test.ts"
   }
 }
