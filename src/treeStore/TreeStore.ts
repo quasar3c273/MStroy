@@ -62,7 +62,6 @@ export default class TreeStore {
         }
     }
 
-    
     updateItem(item: TTreeItemsData): void {
         const oldItem = this.items.get(item.id)
 
