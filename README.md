@@ -1,5 +1,9 @@
-## Установка зависимостей ```npm ci```
+## Установка
+```npm ci```
 
-## Тесты: ```npm run test```
+## Запуск
+```npm run dev```
 
-## Тесты с покрытием ```npm run test:performance```
+## Тесты
+```npm run test```
+```npm run test:performance```
